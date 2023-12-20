@@ -12,7 +12,7 @@ public:
     static void handleStart(AsyncWebServerRequest *request);
     static void handleDelete(AsyncWebServerRequest *request);
     static void handleDownload(AsyncWebServerRequest *request);
-    static void handleIP(AsyncWebServerRequest *request);
+    static void handleHTML(AsyncWebServerRequest *request);
 
 };
 

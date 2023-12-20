@@ -2,6 +2,7 @@
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
 #include "FS_Functions.h"
+#include "minihtml.h"
 
 
 //Funções do WebServer
@@ -50,6 +51,6 @@ void WebServerClass::handleDownload(AsyncWebServerRequest *request){
     file.close();
 }
 
-// void WebServerClass::handleIP(AsyncWebServerRequest *request){
-//   request->send(200, "text/plain", );
-// }
+void WebServerClass::handleHTML(AsyncWebServerRequest *request){
+  request->send(200, "text/html", htmlCode);
+}

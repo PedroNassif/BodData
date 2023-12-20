@@ -16,6 +16,7 @@ class WifiClass{
        static void wifiConnection();                            //Conecta ao Wifi
        static void configPortal(WiFiManager *wifiNode);         //Inicia a configuração do Portal
        static char* getMacAdress();                             //Obtém o endereço MAC do aparelho utilizado 
+       static void wifiAP();
 };
 
 #endif

@@ -54,3 +54,11 @@ void WifiClass::wifiConnection(){
   }
   Serial.println(WiFi.localIP());
 }
+
+void WifiClass::wifiAP(){
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP("ESP32_AP");
+  IPAddress IP = WiFi.softAPIP();
+  Serial.print("Endereço IP do AP: ");
+  Serial.println(IP);
+}
