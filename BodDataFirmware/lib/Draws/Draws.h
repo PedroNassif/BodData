@@ -14,4 +14,5 @@ void drawTemp(float temp);
 void drawErro();
 void drawIniciando();
 void drawWifi();
+void drawSoftAp();
 #endif

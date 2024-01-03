@@ -1,4 +1,4 @@
-const char* htmlCode = R"(
+const char* htmlCodeRoot = R"(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -148,3 +148,11 @@ const char* htmlCode = R"(
 </body>
 </html>
 )";
+
+
+//minihtml para as páginas complementares
+const char* htmlCodeStart = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Arquivo iniciado com sucesso!</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
+
+const char* htmlCodeDelete = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Arquivo deletado com sucesso!</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
+
+const char* htmlCodeReset = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Arquivo resetado com sucesso!</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";

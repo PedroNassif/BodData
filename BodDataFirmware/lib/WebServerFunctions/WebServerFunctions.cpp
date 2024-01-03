@@ -16,10 +16,9 @@ void WebServerClass::notCreated(AsyncWebServerRequest *request) {
 
 void WebServerClass::handleReset(AsyncWebServerRequest *request) {
   // Redefinir o conteúdo do arquivo
-  
   FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", "Time , Temp\r\n");
   // Enviar resposta indicando sucesso
-  request->send(200, "text/plain", "Arquivo resetado com sucesso");
+  request->send(200, "text/html", htmlCodeReset);
 }
 
 void WebServerClass::handleStart(AsyncWebServerRequest *request) {
@@ -27,14 +26,14 @@ void WebServerClass::handleStart(AsyncWebServerRequest *request) {
  FileClass::createDir(LittleFS, "/mydir");
  FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", "Data , Hora, Temperatura\r\n");
   // Enviar resposta indicando sucesso
-  request->send(200, "text/plain", "Arquivo iniciado com sucesso");
+  request->send(200, "text/html", htmlCodeStart);
 }
 
 void WebServerClass::handleDelete(AsyncWebServerRequest *request){
   //Deletando arquivo
  FileClass::deleteFile(LittleFS, "/mydir/datalogger.csv");
   // Enviar resposta indicando sucesso
-  request->send(200, "text/plain", "Arquivo deletado com sucesso");
+  request->send(200, "text/html", htmlCodeDelete);
 }
 
 void WebServerClass::handleDownload(AsyncWebServerRequest *request){
@@ -52,5 +51,5 @@ void WebServerClass::handleDownload(AsyncWebServerRequest *request){
 }
 
 void WebServerClass::handleHTML(AsyncWebServerRequest *request){
-  request->send(200, "text/html", htmlCode);
+  request->send(200, "text/html", htmlCodeRoot);
 }
