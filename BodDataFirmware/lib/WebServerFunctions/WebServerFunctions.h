@@ -9,7 +9,7 @@ public:
     static void notFound(AsyncWebServerRequest *request);
     static void notCreated(AsyncWebServerRequest *request);
     static void handleReset(AsyncWebServerRequest *request);
-    static void handleStart(AsyncWebServerRequest *request);
+    static void handleStart(AsyncWebServerRequest *request, bool stt);
     static void handleDelete(AsyncWebServerRequest *request);
     static void handleDownload(AsyncWebServerRequest *request);
     static void handleHTML(AsyncWebServerRequest *request);

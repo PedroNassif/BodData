@@ -4,6 +4,8 @@
 #include <RTClib.h>
 #include <WiFiManager.h>
 #include <ESPAsyncWebServer.h>
+#include <DNSServer.h>
+
 
 //Minhas Bibliotecas
 #include "Wifi_Functions.h"
@@ -12,24 +14,29 @@
 #include "FS_Functions.h"
 #include "RtcMyLib.h"
 #include "Draws.h"
+#include "myDNS.h"
 
 //Objetos
 AsyncWebServer server(80);
 WiFiManager wifi;
 ModbusMaster modbus;
 RTC_PCF8563 rtc;
+DNSServer dnsServer;
 
 //Variaveis globais
 bool state = false;
-const long interval = 60000;             // Intervalo desejado em milissegundos (60 segundos)
+const long interval = 60000;                // Intervalo desejado em milissegundos (60 segundos)
+IPAddress apIP(192,168, 1, 100);            // Definindo o IP do Soft AP7
 
 
 void setup() {
-  Serial.begin(115200, SERIAL_8N1);      //Inicia a Serial
-  WifiClass::wifiAP();
-  ModbusClass::modbusBegin(&modbus);     //Inicia o Protocolo Modbus
-  FileClass::LittleFSbegin();            //Inicia o LittlesFS
-  RTCClass::rtcBegin(&rtc);              //Inicia o RTC
+  Serial.begin(115200, SERIAL_8N1);         //Inicia a Serial
+  WifiClass::wifiAP(apIP);
+  //WifiClass::configPortal(&wifi);
+  ModbusClass::modbusBegin(&modbus);        //Inicia o Protocolo Modbus
+  FileClass::LittleFSbegin();               //Inicia o LittlesFS
+  RTCClass::rtcBegin(&rtc);                 //Inicia o RTC
+  myDNSClass::DNSbegin(&dnsServer, apIP);     //Inicia o DNS - Domain Name System
 
 
   //Função de mostar a pagina HTML
@@ -39,8 +46,8 @@ void setup() {
 
   //Função de start do Arquivo
   server.on("/start", HTTP_GET, [&state](AsyncWebServerRequest *request){
-    WebServerClass::handleStart(request);
-    state = true;
+    WebServerClass::handleStart(request, state);
+    state = true; 
   });
 
   //Função de Donwload do Arquivo
@@ -59,15 +66,21 @@ void setup() {
     state = false;
   });
 
-  //Função de saída da pagina
-  server.on("")
+  //Função exit do server
+  server.on("/exit", HTTP_GET, [](AsyncWebServerRequest *request){
+    captivePortalActive = false;
+    delay(20000);
+    captivePortalActive = true;
+  });
 
-  server.onNotFound(WebServerClass::notFound);     //Caso não encontre um server ativo
+  server.onNotFound(WebServerClass::notFound);     // Em caso de erro e de não encontrar a página
   server.begin();                                  //Começa o server
   drawSoftAp();
 }
 
 void loop(){
+  dnsServer.processNextRequest();
+  
   while (state == true )
   {
       DateTime timeRtc = RTCClass::rtcGetTime(&rtc);

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
   <title>Central de Controle - DicaLab</title>
   <style>
@@ -103,12 +104,12 @@
 <body>
     <div>
         <h2>CENTRAL DE CONTROLE - DICALAB</h2>
-        <form action="/start" method="get"><button>Comece o Registro</button></form>
-        <form action="/download" method="get"><button>Download do Arquivo</button></form>
-        <form action="/reset" method="get"><button>Resete o Registro</button></form>
-        <form action="/delete" method="get"><button>Delete o Arquivo</button></form>
+        <form id="startForm" action="/start" method="get"><button>Comece o Registro</button></form>
+        <form id="downloadForm" action="/download" method="get"><button>Download do Arquivo</button></form>
+        <form id="resetForm" action="/reset" method="get" onsubmit="return validatePassword('reset');"><button>Resete o Registro</button></form>
+        <form id="deleteForm" action="/delete" method="get" onsubmit="return validatePassword('delete');"><button>Delete o Arquivo</button></form>
         <form action="/exit" method="post"><button class="D">Sair</button></form>
-           <Hr>
+        <hr>
 
     <h3>Páginas Disponíveis</h3>
     <table>
@@ -133,15 +134,26 @@
     <dl>
         <dt>Modelo</dt><dd>Esp32 DevkitC v4</dd>
         <dt>Tipo do Chip</dt><dd>Espressif: ESP32-WROOM-32D</dd>
-        <dt>Chip ID</dt><dd>123456</dd>
         <dt>SPI Flash</dt><dd>32 Mb</dd>
-        <dt>Soft AP IP</dt><dd>192.168.4.1</dd>
+        <dt>Soft AP IP</dt><dd>192.168.1.100</dd>
     </dl>
 
 </div>
-
-<div id="esp32-info">
-    <!-- Os dados do ESP32 serão inseridos aqui dinamicamente -->
-  </div>
 </body>
+<script>    
+function validatePassword(formId) {
+            var enteredPassword = prompt("Digite a senha para confirmar a exclusão:");
+            var correctPassword = "dicaSeeds";
+            
+            if (enteredPassword === correctPassword) {
+                // Se a senha estiver correta, envie o formulário
+                document.getElementById(formId).submit();
+                return true;
+            } else {
+                // Senha incorreta - exibe uma mensagem de erro
+                alert("Senha incorreta. A exclusão não foi confirmada.");
+                return false;
+            }
+        }
+    </script>
 </html>

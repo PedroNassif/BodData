@@ -16,23 +16,16 @@ byte mac[6];
 char mac_Id[18];
 
 void WifiClass::configPortal (WiFiManager *wifiNode){
- if (!wifiNode->autoConnect(nome_da_rede)){
-   Serial.println("Falha ao Conectar automaticamente");
-   if (!wifiNode->startConfigPortal(nome_da_rede)) {
-      Serial.println("Falha ao Conectar ao Portal");
-      delay(3000);
-      //reset and try again, or maybe put it to deep sleep
-      ESP.restart();
-      delay(5000);
-    }
-    //if you get here you have connected to the WiFi
-    Serial.println("Conectado!");
-    shouldSaveConfig = true;
- }
- else{  
-  Serial.println("Conectado automáticamente!");
-  drawWifi();
+  if (!wifiNode->startConfigPortal(nome_da_rede)) {
+    Serial.println("Falha ao Conectar ao Portal");
+    delay(3000);
+    //reset and try again, or maybe put it to deep sleep
+    ESP.restart();
+    delay(5000);
   }
+  //if you get here you have connected to the WiFi
+  Serial.println("Conectado!");
+  shouldSaveConfig = true;
 }
 
 char* WifiClass::getMacAdress(){
@@ -55,10 +48,12 @@ void WifiClass::wifiConnection(){
   Serial.println(WiFi.localIP());
 }
 
-void WifiClass::wifiAP(){
+void WifiClass::wifiAP(const IPAddress &serverIP){
   WiFi.mode(WIFI_AP);
   WiFi.softAP("ESP32_AP");
-  IPAddress IP = WiFi.softAPIP();
+  WiFi.softAPConfig(serverIP, serverIP, IPAddress(255, 255, 255, 0));
   Serial.print("Endereço IP do AP: ");
-  Serial.println(IP);
+  Serial.println(serverIP);
 }
+
+//void WifiClass::

@@ -16,6 +16,7 @@ public:
     //Funções estáticas - sem necessidade de construir objetos
     static void modbusBegin(ModbusMaster *node);
     static float getTemperature(ModbusMaster *node);
+    static int autoDetectSlaves(ModbusMaster *node)
     
 };
 

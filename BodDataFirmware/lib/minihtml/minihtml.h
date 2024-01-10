@@ -1,8 +1,7 @@
-const char* htmlCodeRoot = R"(
-<!DOCTYPE html>
+const char* htmlCodeRoot = R"(<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
   <title>Central de Controle - DicaLab</title>
   <style>
@@ -105,19 +104,19 @@ const char* htmlCodeRoot = R"(
 <body>
     <div>
         <h2>CENTRAL DE CONTROLE - DICALAB</h2>
-        <form action="/start" method="get"><button>Comece o Registro</button></form>
-        <form action="/download" method="get"><button>Download do Arquivo</button></form>
-        <form action="/reset" method="get"><button>Resete o Registro</button></form>
-        <form action="/delete" method="get"><button>Delete o Arquivo</button></form>
+        <form id="startForm" action="/start" method="get"><button>Comece o Registro</button></form>
+        <form id="downloadForm" action="/download" method="get"><button>Download do Arquivo</button></form>
+        <form id="resetForm" action="/reset" method="get" onsubmit="return validatePassword('reset');"><button>Resete o Registro</button></form>
+        <form id="deleteForm" action="/delete" method="get" onsubmit="return validatePassword('delete');"><button>Delete o Arquivo</button></form>
         <form action="/exit" method="post"><button class="D">Sair</button></form>
-           <Hr>
+        <hr>
 
     <h3>Páginas Disponíveis</h3>
     <table>
       <thead><tr><th>Página do server</th><th>Função</th></tr></thead>
       <tbody>
         <tr><td><a href="/start">/start</a></td>
-          <td>Cria o arquivo "datalogger.csv" com dados de temperatura, atualizando a cada 60 segundos.</td></tr>
+          <td>Cria o arquivo "datalogger.csv" com dados de temperatura, atualizando a cada 30 segundos.</td></tr>
         <tr><td><a href="/download">/download</a></td>
           <td>Baixa o arquivo "datalogger.csv" no seu dispositivo.</td></tr>
         <tr><td><a href="/reset">/reset</a></td>
@@ -135,20 +134,30 @@ const char* htmlCodeRoot = R"(
     <dl>
         <dt>Modelo</dt><dd>Esp32 DevkitC v4</dd>
         <dt>Tipo do Chip</dt><dd>Espressif: ESP32-WROOM-32D</dd>
-        <dt>Chip ID</dt><dd>123456</dd>
         <dt>SPI Flash</dt><dd>32 Mb</dd>
-        <dt>Soft AP IP</dt><dd>192.168.4.1</dd>
+        <dt>Soft AP IP</dt><dd>192.168.1.100</dd>
     </dl>
 
 </div>
-
-<div id="esp32-info">
-    <!-- Os dados do ESP32 serão inseridos aqui dinamicamente -->
-  </div>
 </body>
+<script>    
+function validatePassword(formId) {
+            var enteredPassword = prompt("Digite a senha para confirmar a exclusão:");
+            var correctPassword = "dicaSeeds";
+            
+            if (enteredPassword === correctPassword) {
+                // Se a senha estiver correta, envie o formulário
+                document.getElementById(formId).submit();
+                return true;
+            } else {
+                // Senha incorreta - exibe uma mensagem de erro
+                alert("Senha incorreta. A exclusão não foi confirmada.");
+                return false;
+            }
+        }
+    </script>
 </html>
 )";
-
 
 //minihtml para as páginas complementares
 const char* htmlCodeStart = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Arquivo iniciado com sucesso!</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
@@ -156,3 +165,5 @@ const char* htmlCodeStart = R"(<!DOCTYPE html><html lang="en"><head><meta charse
 const char* htmlCodeDelete = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Arquivo deletado com sucesso!</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
 
 const char* htmlCodeReset = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Arquivo resetado com sucesso!</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
+
+const char* htmlCodeAlreadyStart = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>O arquivo já está em andamento</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";

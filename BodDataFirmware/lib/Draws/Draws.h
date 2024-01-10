@@ -15,4 +15,5 @@ void drawErro();
 void drawIniciando();
 void drawWifi();
 void drawSoftAp();
+void drawIP(const IPAddress &serverIP);
 #endif

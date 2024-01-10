@@ -77,3 +77,20 @@ bool getMsgError(ModbusMaster *node, uint8_t result) {
     return false;
 }
 
+int ModbusClass::autoDetectSlaves(ModbusMaster *node) {
+  const int MAX_SLAVE_ADDRESS = 247;  // Valor máximo para um endereço de escravo Modbus
+  const int MIN_SLAVE_ADDRESS = 1;    // Valor mínimo para um endereço de escravo Modbus
+
+  for (int slaveAddress = MIN_SLAVE_ADDRESS; slaveAddress <= MAX_SLAVE_ADDRESS; slaveAddress++) {
+    uint8_t result = node->readInputRegisters(slaveAddress, 0x03E8, 1);
+
+    if (result == node->ku8MBSuccess) {
+      Serial.println("Escravo encontrado no endereço: " + String(slaveAddress));
+      // Realize as ações necessárias para o escravo detectado, se necessário
+    } else {
+      // Não houve resposta do escravo neste endereço
+    }
+
+    delay(10);  // Aguarde um curto período entre tentativas
+  }
+}
