@@ -16,16 +16,22 @@ void WebServerClass::notCreated(AsyncWebServerRequest *request) {
 
 void WebServerClass::handleReset(AsyncWebServerRequest *request) {
   // Redefinir o conteúdo do arquivo
-  FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", "Data , Hora, Temperatura\r\n");
+  FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", "Data , Hora, Temperatura Mínima , Temperatura Média, Temperatura Máxima\r\n");
   // Enviar resposta indicando sucesso
   request->send(200, "text/html", htmlCodeReset);
 }
 
-void WebServerClass::handleStart(AsyncWebServerRequest *request, bool stt) {
+void WebServerClass::handleStart(AsyncWebServerRequest *request, bool stt, uint8_t number) {
   if(stt == false){
       //Criando arquivo
       FileClass::createDir(LittleFS, "/mydir");
-      FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", "Data , Hora, Temperatura\r\n");
+      FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", "Data , Hora"); //Temperatura Mínima , Temperatura Média, Temperatura Máxima\r\n
+      for(uint8_t i = 0; i <= number ; i++){
+        FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", (String(", Temperatura Mínima Escravo") + String(i) + String(", Temperatura Média Escravo") + String(i) + String(", Temperatura Máxima Escravo") + String(i)).c_str());
+      }
+
+      FileClass::writeFile(LittleFS, "/mydir/datalogger.csv", "\r\n");
+
       // Enviar resposta indicando sucesso
       request->send(200, "text/html", htmlCodeStart);
   }else{
