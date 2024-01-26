@@ -13,6 +13,7 @@ public:
     static void handleDelete(AsyncWebServerRequest *request);
     static void handleDownload(AsyncWebServerRequest *request);
     static void handleHTML(AsyncWebServerRequest *request);
+    static void handleRatio(AsyncWebServerRequest *request);
 
 };
 

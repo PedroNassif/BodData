@@ -11,6 +11,7 @@
 #define RX_PIN         16        // RX2 
 #define TX_PIN         17        // TX2
 #define MAX_NUM_SLAVES 100       // Número máximo de escravos do sistemas
+#define MIN_NUM_SLAVES 1
 #define AMOSTRAS       100        // Número de amostras que equivalem a 1minuto, pois ela leva aprox. pouco mais de 2 segundos por leitura
 
 class ModbusClass{

@@ -10,8 +10,8 @@ bool getMsgError(ModbusMaster *node, uint8_t result);
 //globals
 static uint32_t prevMillis = 0;
 const uint16_t dataTxtTimeInterval = 1000;
-const uint8_t MAX_SLAVE_ADDRESS = 20;               // Valor máximo para um endereço de escravo Modbus
-const uint8_t MIN_SLAVE_ADDRESS = 1;                // Valor mínimo para um endereço de escravo Modbus
+const uint8_t MAX_SLAVE_ADDRESS = MAX_NUM_SLAVES;               // Valor máximo para um endereço de escravo Modbus
+const uint8_t MIN_SLAVE_ADDRESS = MIN_NUM_SLAVES;                // Valor mínimo para um endereço de escravo Modbus
 float temp = 0;
 uint8_t numSlaves = 0;
 
@@ -109,7 +109,6 @@ float** ModbusClass::getTemperature(ModbusMaster *node, uint8_t slaveNum, float 
     } 
     return nullptr ;
 }
-
 
 
 bool getMsgError(ModbusMaster *node, uint8_t result) {

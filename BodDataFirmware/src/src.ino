@@ -30,6 +30,7 @@ const long interval = 3000;                                  // Intervalo deseja
 IPAddress apIP(192,168, 1, 100);                             // Definindo o IP do Soft AP7
 uint8_t slaveNumbers = 0;
 float instaReadMatrix[MAX_NUM_SLAVES][AMOSTRAS];             // Crie um array de arrays para armazenar os valores de cada escravo [i][j]
+float ratioReadMatrix[MAX_NUM_SLAVES][3];                    // Crie um array de arrays para armazenar os valores de cada escravo [i][j]
 
 
 
@@ -61,6 +62,11 @@ void setup() {
     WebServerClass::handleDownload(request);
   });
 
+   //Função de Donwload do Arquivo
+  server.on("/ratio", HTTP_GET, [](AsyncWebServerRequest *request){
+    WebServerClass::handleRatio(request);
+  });
+
   //Função de Reset do Arquivo
   server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request){
     WebServerClass::handleReset(request);
@@ -86,33 +92,36 @@ void setup() {
 void loop(){
   dnsServer.processNextRequest();
   
-  while (state == false ) //mudar estado para teste
+  while (state == true ) //mudar estado para teste
   {
       DateTime timeRtc = RTCClass::rtcGetTime(&rtc);
       String timestamp = RTCClass::rtcPrintTime(&rtc);
+      timestamp += ", ";
+      String dataLogger;
     
 
      float** temperatureRead = ModbusClass::getTemperature(&modbus, slaveNumbers, instaReadMatrix);
      if (temperatureRead != nullptr) {
-      // Imprimir o valor pontual da matriz
-      Serial.print("Valor pontual: ");
-      Serial.println(temperatureRead[1][2]);
-    }
+        for(uint8_t i = MIN_NUM_SLAVES; i <= slaveNumbers; i++) {
+          for (uint8_t j = 0; j <= 2; j++) {
+            ratioReadMatrix[i -MIN_NUM_SLAVES][j] = temperatureRead[i - MIN_NUM_SLAVES][j];
+          }
+        }
+      }
       
-    String dataLogger;
-    // for(uint8_t i = 0; i < slaveNumbers; i++) {
-        
-    //   //   for (uint8_t j = 0; j < AMOSTRAS; j++) {
-    //   //     dataLogger += String(temperatureRead[i][j]);
-    //   //     if (j < AMOSTRAS - 1) {
-    //   //       dataLogger += ", ";
-    //   //     }
-    //   //   }
-    //   //   dataLogger += "\r\n";
-    //   }
-      // const char* dataToAppend = dataLogger.c_str();
-      // FileClass::appendFile(LittleFS, "/mydir/datalogger.csv", dataToAppend);
-        
+    //Impressão dos dados - datalogger
+    FileClass::appendFileString(LittleFS, "/mydir/datalogger.csv", timestamp);
+    for(uint8_t i = MIN_NUM_SLAVES; i <= slaveNumbers; i++) {
+        for (uint8_t j = 0; j <= 2; j++) {
+          dataLogger += String(temperatureRead[i - MIN_NUM_SLAVES][j]);
+          if (j < 3 ) {
+            dataLogger += ", ";
+          }
+        }
+      }
+      dataLogger += "\r\n";
+      FileClass::appendFileString(LittleFS, "/mydir/datalogger.csv", dataLogger);
+
       //Caso queira que os logs apareçam no Monitor descomente essa linha
       //FileClass::readFile(LittleFS, "/mydir/datalogger.csv");
       
