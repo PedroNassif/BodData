@@ -57,3 +57,21 @@ void drawWifi(){
   display.print("Conectado ao Wifi!");
   display.display(); 
 }
+
+void drawSoftAp(){
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0,10);
+  display.print("Access Point Online");
+  display.display(); 
+}
+
+void drawIP(const IPAddress &serverIP){
+    display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0,10);
+  display.print(serverIP);
+  display.display(); 
+}
