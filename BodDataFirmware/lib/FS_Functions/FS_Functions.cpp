@@ -69,6 +69,26 @@ void FileClass::readFile(fs::FS &fs, const char * path){
     file.close();
 }
 
+String FileClass::readFile2(fs::FS &fs, const char * path){
+    Serial.printf("Reading file: %s\r\n", path);
+
+    String fileContent = ""; // Inicializa a string vazia para armazenar o conteúdo do arquivo
+
+    File file = fs.open(path);
+    if(!file || file.isDirectory()){
+        Serial.println("- failed to open file for reading");
+        return ""; // Retorna uma string vazia se houver erro ao abrir o arquivo
+    }
+
+    Serial.println("- read from file:");
+    while(file.available()){
+        char c = file.read(); // Lê o próximo caractere do arquivo
+        fileContent += c; // Adiciona o caractere lido à string fileContent
+    }
+    file.close();
+
+    return fileContent; // Retorna a string contendo o conteúdo do arquivo
+}
 
 void FileClass::writeFile(fs::FS &fs, const char * path, const char * message){
     Serial.printf("Writing file: %s\r\n", path);

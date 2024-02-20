@@ -18,6 +18,7 @@ public:
     static void appendFileString(fs::FS &fs, const char * path, String message);
     static void renameFile(fs::FS &fs, const char * path1, const char * path2);
     static void deleteFile(fs::FS &fs, const char * path);
+    static String readFile2(fs::FS &fs, const char * path);
 };
 
 #endif

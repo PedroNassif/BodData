@@ -6,14 +6,12 @@
 #include <ESPAsyncWebServer.h>
 #include <DNSServer.h>
 
-
 //Minhas Bibliotecas
 #include "Wifi_Functions.h"
 #include "WebServerFunctions.h"
 #include "ModBusLib.h"
 #include "FS_Functions.h"
 #include "RtcMyLib.h"
-#include "Draws.h"
 #include "myDNS.h"
 
 //Objetos
@@ -23,16 +21,12 @@ ModbusMaster modbus;
 RTC_PCF8563 rtc;
 DNSServer dnsServer;
 
-
 //Variaveis globais
 bool state = false;
-const long interval = 3000;                                  // Intervalo desejado em milissegundos (60 segundos)
 IPAddress apIP(192,168, 1, 100);                             // Definindo o IP do Soft AP7
 uint8_t slaveNumbers = 0;
-float instaReadMatrix[MAX_NUM_SLAVES][AMOSTRAS];             // Crie um array de arrays para armazenar os valores de cada escravo [i][j]
-float ratioReadMatrix[MAX_NUM_SLAVES][3];                    // Crie um array de arrays para armazenar os valores de cada escravo [i][j]
-
-
+uint32_t counter = 0;
+float ratios[30][3];
 
 
 void setup() {
@@ -44,7 +38,6 @@ void setup() {
   FileClass::LittleFSbegin();                                //Inicia o LittlesFS
   RTCClass::rtcBegin(&rtc);                                  //Inicia o RTC
   myDNSClass::DNSbegin(&dnsServer, apIP);                    //Inicia o DNS - Domain Name System
-
 
   //Função de mostar a pagina HTML
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -64,12 +57,12 @@ void setup() {
 
    //Função de Donwload do Arquivo
   server.on("/ratio", HTTP_GET, [](AsyncWebServerRequest *request){
-    WebServerClass::handleRatio(request);
+    WebServerClass::handleRatio(request, counter, ratios, slaveNumbers);
   });
 
   //Função de Reset do Arquivo
   server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request){
-    WebServerClass::handleReset(request);
+    WebServerClass::handleReset(request, slaveNumbers);
   });
 
   //Função de delete do Arquivo
@@ -78,54 +71,47 @@ void setup() {
     state = false;
   });
 
-  // //Função exit do server
-  // server.on("/exit", HTTP_GET, [](AsyncWebServerRequest *request){
-    
-  // });
+  //Função exit do server
+  server.on("/exit", HTTP_GET, [](AsyncWebServerRequest *request){
+    WebServerClass::handleExit(request);
+  });
 
-  // state = false;                                   // Declaração do estado
+  //state = true;                                   // Declaração do estado
   server.onNotFound(WebServerClass::notFound);     // Em caso de erro e de não encontrar a página
   server.begin();                                  //Começa o server
-  drawSoftAp();
 }
+
+
 
 void loop(){
   dnsServer.processNextRequest();
-  
-  while (state == true ) //mudar estado para teste
-  {
-      DateTime timeRtc = RTCClass::rtcGetTime(&rtc);
-      String timestamp = RTCClass::rtcPrintTime(&rtc);
-      timestamp += ", ";
-      String dataLogger;
+  while (state == true ){
+    DateTime timeRtc = RTCClass::rtcGetTime(&rtc);
+    String timestamp = RTCClass::rtcPrintTime(&rtc);
+    timestamp += ", ";
+    String dataLogger;
+   
     
-
-     float** temperatureRead = ModbusClass::getTemperature(&modbus, slaveNumbers, instaReadMatrix);
-     if (temperatureRead != nullptr) {
-        for(uint8_t i = MIN_NUM_SLAVES; i <= slaveNumbers; i++) {
+    float** temperatureRead = ModbusClass::getTemperature(&modbus, slaveNumbers, &rtc);
+    if (temperatureRead != nullptr) {
+      //Impressão dos dados - datalogger
+      FileClass::appendFileString(LittleFS, "/mydir/datalogger.csv", timestamp);
+      for(uint8_t i = MIN_NUM_SLAVES; i <= slaveNumbers; i++) {
           for (uint8_t j = 0; j <= 2; j++) {
-            ratioReadMatrix[i -MIN_NUM_SLAVES][j] = temperatureRead[i - MIN_NUM_SLAVES][j];
+            dataLogger += String(temperatureRead[i - MIN_NUM_SLAVES][j]);
+            ratios[i-1][j] += temperatureRead[i-1][j];
+            Serial.println(ratios[i-1][j]);
+            if (i == slaveNumbers && j == 2) {
+              } else {
+              dataLogger += ", ";
+              }
           }
         }
-      }
-      
-    //Impressão dos dados - datalogger
-    FileClass::appendFileString(LittleFS, "/mydir/datalogger.csv", timestamp);
-    for(uint8_t i = MIN_NUM_SLAVES; i <= slaveNumbers; i++) {
-        for (uint8_t j = 0; j <= 2; j++) {
-          dataLogger += String(temperatureRead[i - MIN_NUM_SLAVES][j]);
-          if (j < 3 ) {
-            dataLogger += ", ";
-          }
-        }
-      }
-      dataLogger += "\r\n";
-      FileClass::appendFileString(LittleFS, "/mydir/datalogger.csv", dataLogger);
-
-      //Caso queira que os logs apareçam no Monitor descomente essa linha
-      //FileClass::readFile(LittleFS, "/mydir/datalogger.csv");
-      
-      delay(interval);
+        dataLogger += "\r\n";
+        FileClass::appendFileString(LittleFS, "/mydir/datalogger.csv", dataLogger);
+      }      
+    delay(100);
+    counter++;
   }
 }
 

@@ -106,7 +106,7 @@ const char* htmlCodeRoot = R"(<!DOCTYPE html>
         <h2>CENTRAL DE CONTROLE - DICALAB</h2>
         <form id="startForm" action="/start" method="get"><button>Comece o Registro</button></form>
         <form id="downloadForm" action="/download" method="get"><button>Download do Arquivo</button></form>
-        <form id="ratioForm" action="/ratio" method="get"><button>Tabela das Médias</button></form>
+        <form id="ratioForm" action="/ratio" method="get"><button>Temperaturas Médias</button></form>
         <form id="resetForm" action="/reset" method="get" onsubmit="return validatePassword('reset');"><button>Resete o Registro</button></form>
         <form id="deleteForm" action="/delete" method="get" onsubmit="return validatePassword('delete');"><button>Delete o Arquivo</button></form>
         <form action="/exit" method="post"><button class="D">Sair</button></form>
@@ -121,7 +121,7 @@ const char* htmlCodeRoot = R"(<!DOCTYPE html>
         <tr><td><a href="/download">/download</a></td>
           <td>Baixa o arquivo "datalogger.csv" no seu dispositivo.</td></tr>
           <tr><td><a href="/ratio">/ratio</a></td>
-            <td>Baixa o arquivo "ratiologgers.csv" das médias das leituras no seu dispositivo.</td></tr>
+            <td>Página para vizualizar as temperaturas médias dos componentes no peíodo total do registro.</td></tr>
         <tr><td><a href="/reset">/reset</a></td>
           <td>Reinicia a coleta dos dados de temperatura, começando um novo arquivo "datalogger.csv"</td></tr>
         <tr><td><a href="/delete">/delete</a></td>
