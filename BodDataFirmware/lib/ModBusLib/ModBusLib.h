@@ -16,10 +16,10 @@
 class ModbusClass{
     public:
         //Variáveis
-        static const uint16_t _SAMPLES = 1500;
+        static const uint16_t _SAMPLES = 5000;
         static uint32_t prevMillis;
         static const uint16_t dataTxtTimeInterval = 1000;
-        static const uint32_t timeToCatch = 10;                                // Valor em segundos
+        static const uint32_t timeToCatch = 90;                                // Valor em segundos
         static const uint8_t MAX_SLAVE_ADDRESS = MAX_NUM_SLAVES;               // Valor máximo para um endereço de escravo Modbus
         static const uint8_t MIN_SLAVE_ADDRESS = MIN_NUM_SLAVES;               // Valor mínimo para um endereço de escravo Modbus
         static uint8_t numSlaves;

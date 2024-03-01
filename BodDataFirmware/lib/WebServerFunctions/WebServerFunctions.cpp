@@ -132,3 +132,8 @@ void WebServerClass::handleRatio(AsyncWebServerRequest *request, uint32_t count,
 void WebServerClass::handleExit(AsyncWebServerRequest *request){
     request->send(200, "text/plain", "Você saiu do portal, se quiser reconectar digite o IP: 192.168.1.100 na barra de pesqueisa do seu navegador.");
 }
+
+
+void WebServerClass::handleCalibration(AsyncWebServerRequest *request){
+  request->send(200, "text/html", htmlCodeCalibration);
+}

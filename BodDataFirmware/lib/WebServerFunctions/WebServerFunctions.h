@@ -15,6 +15,7 @@ public:
     static void handleHTML(AsyncWebServerRequest *request);
     static void handleRatio(AsyncWebServerRequest *request, uint32_t count, float matrix[30][3], uint8_t number);
     static void handleExit(AsyncWebServerRequest *request);
+    static void handleCalibration(AsyncWebServerRequest *request);
 
 };
 

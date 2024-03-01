@@ -4,7 +4,7 @@
 #include "Draws.h"
 
 //Variaveis
-const char*ssid = "Dicalab";                            //Nome(SSID) do WifiLocal
+const char* ssid = "Dicalab";                            //Nome(SSID) do WifiLocal
 const char* password = "dicalab2763";                   //Senha do WifiLocal
 const char* nome_da_rede = "Esp32-Ap";                  //Define o nome da rede do ConfigPortal
 
@@ -15,8 +15,10 @@ bool shouldSaveConfig = false;
 byte mac[6];
 char mac_Id[18];
 
-void WifiClass::configPortal (WiFiManager *wifiNode){
-  if (!wifiNode->startConfigPortal(nome_da_rede)) {
+void WifiClass::configPortal (WiFiManager *wifiNode, const char* name){
+  wifiNode->resetSettings();
+  WiFi.mode(WIFI_AP_STA);
+  if (!wifiNode->startConfigPortal((char*)name)) {
     Serial.println("Falha ao Conectar ao Portal");
     delay(3000);
     //reset and try again, or maybe put it to deep sleep
@@ -25,7 +27,7 @@ void WifiClass::configPortal (WiFiManager *wifiNode){
   }
   //if you get here you have connected to the WiFi
   Serial.println("Conectado!");
-  shouldSaveConfig = true;
+  // shouldSaveConfig = true;
 }
 
 char* WifiClass::getMacAdress(){
@@ -48,9 +50,9 @@ void WifiClass::wifiConnection(){
   Serial.println(WiFi.localIP());
 }
 
-void WifiClass::wifiAP(const IPAddress &serverIP){
+void WifiClass::wifiAP(const IPAddress &serverIP, const char* name){
   WiFi.mode(WIFI_AP);
-  WiFi.softAP("ESP32_AP");
+  WiFi.softAP(name);
   WiFi.softAPConfig(serverIP, serverIP, IPAddress(255, 255, 255, 0));
   Serial.print("Endereço IP do AP: ");
   Serial.println(serverIP);

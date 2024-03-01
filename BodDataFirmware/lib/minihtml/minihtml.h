@@ -103,12 +103,13 @@ const char* htmlCodeRoot = R"(<!DOCTYPE html>
 </head>
 <body>
     <div>
-        <h2>CENTRAL DE CONTROLE - DICALAB</h2>
+                <h2>CENTRAL DE CONTROLE - DICALAB</h2>
         <form id="startForm" action="/start" method="get"><button>Comece o Registro</button></form>
         <form id="downloadForm" action="/download" method="get"><button>Download do Arquivo</button></form>
-        <form id="ratioForm" action="/ratio" method="get"><button>Temperaturas Médias</button></form>
+        <form id="ratioForm" action="/ratio" method="get"><button>Tabela das Médias</button></form>
         <form id="resetForm" action="/reset" method="get" onsubmit="return validatePassword('reset');"><button>Resete o Registro</button></form>
         <form id="deleteForm" action="/delete" method="get" onsubmit="return validatePassword('delete');"><button>Delete o Arquivo</button></form>
+        <form id="calibrationForm" action="/calibration" method="get" onsubmit="return validatePassword('calibration');"><button>Calibração do ESP32</button></form>
         <form action="/exit" method="post"><button class="D">Sair</button></form>
         <hr>
 
@@ -117,15 +118,17 @@ const char* htmlCodeRoot = R"(<!DOCTYPE html>
       <thead><tr><th>Página do server</th><th>Função</th></tr></thead>
       <tbody>
         <tr><td><a href="/start">/start</a></td>
-          <td>Cria o arquivo "datalogger.csv" com dados de temperatura, atualizando a cada 30 segundos.</td></tr>
+          <td>Cria o arquivo "datalogger.csv" com dados de temperatura, atualizando a cada 5 minutos, coletando as temperaturas mínimas, médias e máximas deste ciclo. </td></tr>
         <tr><td><a href="/download">/download</a></td>
           <td>Baixa o arquivo "datalogger.csv" no seu dispositivo.</td></tr>
           <tr><td><a href="/ratio">/ratio</a></td>
-            <td>Página para vizualizar as temperaturas médias dos componentes no peíodo total do registro.</td></tr>
+            <td>Mostra as médias das leituras no seu dispositivo em todo o ciclo do registro.</td></tr>
         <tr><td><a href="/reset">/reset</a></td>
           <td>Reinicia a coleta dos dados de temperatura, começando um novo arquivo "datalogger.csv"</td></tr>
         <tr><td><a href="/delete">/delete</a></td>
           <td>Deleta o arquivo "datalogger.csv" na memória do dispositivo.</td></tr>
+          <tr><td><a href="/calibration">/calibration</a></td>
+            <td> Realizará a calibração do dispositivo de "clock" do ESP32 para corrigir o registro do marcador de tempo.</td></tr>
         <tr><td><a href="/exit">/exit</a></td>
           <td>Sai do portal de registros.</td></tr>
       </tbody>
@@ -170,3 +173,5 @@ const char* htmlCodeDelete = R"(<!DOCTYPE html><html lang="en"><head><meta chars
 const char* htmlCodeReset = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Arquivo resetado com sucesso!</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
 
 const char* htmlCodeAlreadyStart = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>O arquivo já está em andamento</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
+
+const char* htmlCodeCalibration = R"(<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Central de Controle - DicaLab</title><style>*{font-family:Quicksand,sans-serif}body{text-align:center;margin:20px;background-color:#333;color:#fff}h1{margin-bottom:20px;color:#f3f3f3;font-size:x-large}button{border:0;background-color:#1fa3ec;color:#fff;border-radius:5px;width:35%;padding:10px;font-size:1.2rem;cursor:pointer;margin-bottom:15px;transition:background-color .3s}button:active{background-color:#114b74}button:hover{background-color:#155a8a}button.D{background-color:#dc3630;width:50%}button.D:hover{background-color:#9b1915}button.D:active{background-color:#b91d18}</style></head><body><div><h1>Real Time Clock sendo calibrado... Aguarde um momento!<h2><br>Será necessário se conectar com a rede móvel do Portal de Configuração do ESP32.<br><br>Entre nas configurações de WiFi e acessse a rede: ESP32_CALIBRATION</h1><hr><br><form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form></div></body></html>)";
