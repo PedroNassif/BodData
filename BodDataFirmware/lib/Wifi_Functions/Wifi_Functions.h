@@ -14,9 +14,9 @@ class WifiClass{
 
        //Funções
        static void wifiConnection();                            //Conecta ao Wifi
-       static void configPortal(WiFiManager *wifiNode);         //Inicia a configuração do Portal
+       static void configPortal(WiFiManager *wifiNode, const char* name);         //Inicia a configuração do Portal
        static char* getMacAdress();                             //Obtém o endereço MAC do aparelho utilizado 
-       static void wifiAP(const IPAddress &serverIP);
+       static void wifiAP(const IPAddress &serverIP, const char* name);
 };
 
 #endif

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+  <title>Central de Controle - DicaLab</title>
+  <style>
+    * {
+        font-family:"Quicksand", sans-serif;
+    }
+
+    body {
+      text-align: center;
+      margin: 20px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #4f66e7f5;
+      font-size: x-large;
+    }
+
+    .box {
+      background-color: #444;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 20px;
+      margin-left: 10px;
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+    .box h2 {
+      color: #60e920;
+      font-size: large;
+      margin-bottom: 10px;
+    }
+
+    .temperature {
+      color: #fff;
+      font-size: 1.2rem;
+    }
+
+
+    button {
+      border: 0;
+      background-color: #1fa3ec;
+      color: #fff;
+      border-radius: 5px;
+      width: 35%;
+      padding: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: background-color 0.3s;
+    }
+
+    button:active {
+      background-color: #114b74;
+    }
+
+    button:hover {
+      background-color: #155a8a;
+    }
+
+    button.D{
+        background-color: #dc3630; 
+        width: 20%;
+    }
+
+    button.D:hover{
+        background-color: #9b1915
+    }
+
+    button.D:active{
+        background-color: #b91d18
+    }
+  </style>
+</head>
+<body>
+    <div>
+        <h1>Temperaturas Médias dos Equipamentos</h1>
+        <Hr><br>
+        <div id="temperatureBoxes">
+          <!-- Os boxes serão adicionados aqui dinamicamente -->
+        </div>
+        <form action="/" method="get"><button class="D">Voltar à Central de Ações</button></form>       
+</div>
+  <script>
+const temperatures = [
+      { slave: 1, min: 25.3, avg: 27.6, max: 30.1 },
+      { slave: 2, min: 24.8, avg: 28.2, max: 31.5 },
+      // Adicione mais dados conforme necessário
+    ];
+
+ // Função para criar os boxes de temperatura
+ function createTemperatureBoxes() {
+      const temperatureBoxes = document.getElementById('temperatureBoxes');
+
+      temperatures.forEach(temperature => {
+        const box = document.createElement('div');
+        box.classList.add('box');
+
+        const h2 = document.createElement('h2');
+        h2.textContent = `Escravo ${temperature.slave}`;
+        box.appendChild(h2);
+
+        const p1 = document.createElement('p');
+        p1.classList.add('temperature');
+        p1.textContent = `Mínima: ${temperature.min}°C`;
+        box.appendChild(p1);
+
+        const p2 = document.createElement('p');
+        p2.classList.add('temperature');
+        p2.textContent = `Média: ${temperature.avg}°C`;
+        box.appendChild(p2);
+
+        const p3 = document.createElement('p');
+        p3.classList.add('temperature');
+        p3.textContent = `Máxima: ${temperature.max}°C`;
+        box.appendChild(p3);
+
+        temperatureBoxes.appendChild(box);
+      });
+    }
+
+    // Chama a função quando a página terminar de carregar
+    window.onload = function() {
+      createTemperatureBoxes();
+    };
+  </script>
+</body>
+</html>

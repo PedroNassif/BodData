@@ -109,6 +109,7 @@
         <form id="ratioForm" action="/ratio" method="get"><button>Tabela das Médias</button></form>
         <form id="resetForm" action="/reset" method="get" onsubmit="return validatePassword('reset');"><button>Resete o Registro</button></form>
         <form id="deleteForm" action="/delete" method="get" onsubmit="return validatePassword('delete');"><button>Delete o Arquivo</button></form>
+        <form id="calibrationForm" action="/calibration" method="get" onsubmit="return validatePassword('calibration');"><button>Calibração do ESP32</button></form>
         <form action="/exit" method="post"><button class="D">Sair</button></form>
         <hr>
 
@@ -126,6 +127,8 @@
           <td>Reinicia a coleta dos dados de temperatura, começando um novo arquivo "datalogger.csv"</td></tr>
         <tr><td><a href="/delete">/delete</a></td>
           <td>Deleta o arquivo "datalogger.csv" na memória do dispositivo.</td></tr>
+          <tr><td><a href="/calibration">/calibration</a></td>
+            <td> Realizará a calibração do dispositivo de "clock" do ESP32 para corrigir o registro do marcador de tempo.</td></tr>
         <tr><td><a href="/exit">/exit</a></td>
           <td>Sai do portal de registros.</td></tr>
       </tbody>
